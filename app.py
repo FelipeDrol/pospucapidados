@@ -64,7 +64,7 @@ def get_dado(query: DadosBuscaUsuarioSchema):
     except Exception as e:
         retorno_erro(e, "Erro ao obter dado por id", 400)
     
-@app.put('/dado', tags=[dado_tag], responses = retornos_dado_view())
+@app.post('/dado', tags=[dado_tag], responses = retornos_dado_view())
 def add_dado(form: DadoViewSchema):
     """
     Adiciona um novo dado à base
@@ -104,7 +104,7 @@ def del_dado(query: DadoBuscaIdSchema):
         error_msg = "Erro ao deletar dado: " + repr(e)
         return {"message": error_msg}, 404
     
-@app.post('/dado', tags=[dado_tag], responses = retornos_listagem_dados())
+@app.put('/dado', tags=[dado_tag], responses = retornos_listagem_dados())
 def edit_dado(form: DadoEditSchema):
     """
     Edita um dado existente pelo seu id
