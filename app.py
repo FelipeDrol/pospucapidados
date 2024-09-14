@@ -17,8 +17,8 @@ dado_tag = Tag(name="Dado", description="Visualização, Adição, edição e re
 def get_todos_dados():
     return Session().query(Dados).all()
 
-def retornos_listagem_dados():
-    return {"200": ListagemDadosSchema, "400": ErrorSchema, "404": ErrorSchema}
+def retornos_text_view():
+    return {"200": SucessSchema, "400": ErrorSchema, "404": ErrorSchema}
 
 def retornos_dado_view():
     return {"200": DadoViewSchema, "400": ErrorSchema, "404": ErrorSchema}
@@ -34,21 +34,7 @@ def home():
     """
     Redireciona para /openapi, tela que permite a escolha do estilo de documentação.
     """
-    return redirect('/openapi')
-    
-#Apis Dados
-@app.get('/dados', tags=[dado_tag], responses = retornos_listagem_dados())
-def get_dados():
-    """
-    Retorna todos os dados cadastrados
-    """
-    try:
-        dados = Session().query(Dados).all()
-        return apresenta_dados(dados), 200
-    except Exception as e:
-        retorno_erro(e, "Não foi possível obter o dado", 400)
-        error_msg = "Erro ao buscar todos os dados: " + repr(e)
-        return {"message": error_msg}    
+    return redirect('/openapi') 
 
 @app.get('/dado', tags=[dado_tag], responses = retornos_dado_view())
 def get_dado(query: DadosBuscaUsuarioSchema):
@@ -64,7 +50,7 @@ def get_dado(query: DadosBuscaUsuarioSchema):
     except Exception as e:
         retorno_erro(e, "Erro ao obter dado por id", 400)
     
-@app.post('/dado', tags=[dado_tag], responses = retornos_dado_view())
+@app.post('/dado', tags=[dado_tag], responses = retornos_text_view())
 def add_dado(form: DadoViewSchema):
     """
     Adiciona um novo dado à base
@@ -76,13 +62,11 @@ def add_dado(form: DadoViewSchema):
         session.add(dado)
         session.commit()
 
-        return apresenta_dado(dado), 200
+        return "Adicionado com sucesso", 200
     except Exception as e:
         retorno_erro(e, "Não foi possível obter o dado", 400)
-        error_msg = "Não foi possível adicionar o novo dado:" + repr(e)
-        return {"message": error_msg}
 
-@app.delete('/dado', tags=[dado_tag], responses = retornos_listagem_dados())
+@app.delete('/dado', tags=[dado_tag], responses = retornos_text_view())
 def del_dado(query: DadoBuscaIdSchema):
     """
     Deleta um dado a partir do seu id
@@ -95,16 +79,13 @@ def del_dado(query: DadoBuscaIdSchema):
         if(dado):
             sqlQuery.delete()
             session.commit()
-            dados = get_todos_dados()
-            return apresenta_dados(dados), 200
+            return "Deletado com sucesso", 200
         else:
             return {"message": "Dado não localizado"}, 404
     except Exception as e:
         retorno_erro(e, "Não foi possível obter o dado")
-        error_msg = "Erro ao deletar dado: " + repr(e)
-        return {"message": error_msg}, 404
     
-@app.put('/dado', tags=[dado_tag], responses = retornos_listagem_dados())
+@app.put('/dado', tags=[dado_tag], responses = retornos_text_view())
 def edit_dado(form: DadoEditSchema):
     """
     Edita um dado existente pelo seu id
@@ -118,8 +99,7 @@ def edit_dado(form: DadoEditSchema):
             dado.usuario = form.usuario
             dado.pagina = form.pagina
             session.commit()
-            dados = get_todos_dados()
-            return apresenta_dados(dados), 200
+            return "Editado com sucesso", 200
         else:
             return {"message": "Dado não localizado"}, 404
     except Exception as e:
