@@ -2,7 +2,7 @@
 
 MVP para Disciplina **Desenvolvimento Back-end Avançado** 
 
-![image](https://github.com/user-attachments/assets/dac9a1b0-3f89-43d0-80ce-493c37879619)
+![364550335-dd0d9c3d-becd-41f1-9a1d-dbc9e8c858de](https://github.com/user-attachments/assets/4490ebb2-98ce-4827-bb49-80eb4f11fdd8)
 
 O objetivo aqui é ilustrar um exemplo de backend de um painel administrativo de um CMS que armazena os dados de um portal de envio de documentos. Guardando os dados em texto deste portal. Todos os dados sao guardados em um json em um campo da tabela, com o usuario e a pagina como chave.
 
